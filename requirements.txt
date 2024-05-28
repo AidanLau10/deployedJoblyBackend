@@ -13,4 +13,3 @@ numpy
 matplotlib
 seaborn
 scikit-learn
-urllib

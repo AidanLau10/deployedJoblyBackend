@@ -1,14 +1,11 @@
 from flask import Blueprint, request, jsonify, current_app, Response
 from flask_restful import Api, Resource
-from auth_middleware import token_required
 from model.users import User
 from __init__ import app, db, cors
 from model.applications import Application
 from model.jobs import Job
 from model.jobuser import JobUser
 
-from urllib.parse import urlparse
-from urllib.parse import parse_qs
 
 jobuser_api = Blueprint('jobuser_api', __name__,
                    url_prefix='/api/jobuser')
@@ -49,16 +46,15 @@ class JobUserAPI:
         # get method that will return the number of users that applied to a specific job
         def get(self):
             # get the query parameters of the request
-            frontendrequest = request.url
-            parsed_url = urlparse(frontendrequest)
-            query_params = parse_qs(parsed_url.query)
+       
+           
             '''
             if a job id is in the query parameters, count how how many jobuser objects match the jobid because each jobuser object is the amount of 
             times somebody has applied to the specific job
             '''
-            if 'id' in query_params:
-                query_id = query_params['id'][0]
-                count = JobUser.query.filter_by(jobid=query_id).count()
+            if request.args.get('id'):
+                
+                count = JobUser.query.filter_by(jobid=request.args.get('id')).count()
                 if count:
                     return jsonify(count)
                 else:
