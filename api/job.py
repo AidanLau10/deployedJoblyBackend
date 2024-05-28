@@ -1,18 +1,13 @@
-import json, jwt
 from flask import Blueprint, request, jsonify, current_app, Response
 from flask_restful import Api, Resource # used for REST API building
 from datetime import datetime
 from auth_middleware import token_required
 from model.users import User
-import random
 from __init__ import app, db, cors
-import flask
 from model.jobs import Job
 from model.applications import Application
 from model.jobuser import JobUser
-from urllib import parse
-from urllib.parse import urlparse
-from urllib.parse import parse_qs
+
 
 
 job_api = Blueprint('job_api', __name__,
@@ -106,17 +101,15 @@ class JobAPI:
         # will return specific job if an id is passed in the url parameters of the request
         def get(self): 
             # get the query parameters of the request
-            frontendrequest = request.url
-            parsed_url = urlparse(frontendrequest)
-            query_params = parse_qs(parsed_url.query)
+
             '''
             check if id is in the query parameters
             if it is, query the job database by the specific id and return the job
             if there is no id in the parameter, return all the jobs
             '''
-            if 'id' in query_params:
-                query_id = query_params['id'][0]
-                job = Job.query.filter_by(id=query_id).first()
+            if request.args.get('id'):
+               
+                job = Job.query.filter_by(id=request.args.get('id')).first()
                 if job:
                     return job.read()
                 else:

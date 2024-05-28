@@ -7,7 +7,7 @@ from auth_middleware import token_required
 from model.users import User
 
 user_api = Blueprint('user_api', __name__,
-                   url_prefix='/api')
+                   url_prefix='/api/users')
 
 # API docs https://flask-restful.readthedocs.io/en/latest/api.html
 api = Api(user_api)
@@ -210,6 +210,6 @@ class UserAPI:
             
     # building RESTapi endpoint
     api.add_resource(_ID, '/id')
-    api.add_resource(_CRUD, '/users')
+    api.add_resource(_CRUD, '/')
     api.add_resource(_Security, '/authenticate')
     
