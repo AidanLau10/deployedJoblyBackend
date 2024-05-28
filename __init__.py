@@ -19,7 +19,9 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 # Allowed servers for cross-origin resource sharing (CORS), these are GitHub Pages and localhost for GitHub Pages testing
-cors = CORS(app, supports_credentials=True, origins=['http://localhost:4100', 'http://127.0.0.1:4100', 'https://nighthawkcoders.github.io'])
+cors = CORS(app, supports_credentials=True, origins=['http://127.0.0.1:4100/joblyFrontend/', 'http://localhost:4100/joblyFrontend/', 'https://aidanlau10.github.io/joblyFrontend/', 
+                          'https://aidanlau10.github.io/', 'http://127.0.0.1:4100/joblyFrontend/jobs/', 'http://localhost:4100/joblyFrontend/jobs/',
+                          'https://aidanlau10.github.io/joblyFrontend/jobs/', 'http://127.0.0.1:4100'])
 
 # Secret key for session handling and CSRF protection
 SECRET_KEY = os.environ.get('SECRET_KEY') or 'SECRET_KEY'

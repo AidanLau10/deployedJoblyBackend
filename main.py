@@ -4,18 +4,18 @@ from flask_login import current_user, login_user, logout_user
 from flask.cli import AppGroup
 
 # import "objects" from "this" project
-from __init__ import app, db, login_manager  # Key Flask objects 
+from __init__ import app, db, login_manager, cors  # Key Flask objects 
 
 # API endpoints
-from api.covid import covid_api 
-from api.joke import joke_api 
+
 from api.user import user_api 
-from api.player import player_api
-from api.titanic import titanic_api
+from api.jobuser import jobuser_api
+from api.job import job_api
 # database Initialization functions
 from model.users import User, initUsers 
-from model.players import initPlayers
-from model.titanicML import initTitanic
+from model.jobs import initJobs
+from model.jobuser import initJobsUsers
+from model.applications import initApplications
 # server only Views
 from views.algorithm.algorithm import algorithm_views 
 from views.recipes.recipe import recipe_views 
@@ -25,16 +25,26 @@ from views.projects.projects import project_views
 db.init_app(app)
 
 # register URIs for api endpoints
-app.register_blueprint(joke_api) 
-app.register_blueprint(covid_api) 
+
 app.register_blueprint(user_api) 
-app.register_blueprint(player_api)
-app.register_blueprint(titanic_api)
+app.register_blueprint(job_api)
+app.register_blueprint(jobuser_api)
+
 # register URIs for server pages
 app.register_blueprint(algorithm_views) 
 app.register_blueprint(recipe_views) 
 app.register_blueprint(project_views) 
 
+
+@app.before_request
+def before_request():
+    # Check if the request came from a specific origin
+    allowed_origin = request.headers.get('Origin')
+    if allowed_origin in ['http://127.0.0.1:4100/joblyFrontend/', 'http://localhost:4100/joblyFrontend/', 'https://aidanlau10.github.io/joblyFrontend/', 
+                          'https://aidanlau10.github.io/', 'http://127.0.0.1:4100/joblyFrontend/jobs/', 'http://localhost:4100/joblyFrontend/jobs/',
+                          'https://aidanlau10.github.io/joblyFrontend/jobs/', 'http://127.0.0.1:4100']:
+        cors._origins = allowed_origin
+        
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
@@ -84,8 +94,9 @@ custom_cli = AppGroup('custom', help='Custom commands')
 @custom_cli.command('generate_data')
 def generate_data():
     initUsers()
-    initPlayers()
-    initTitanic()
+    initJobs()
+    initJobsUsers()
+    initApplications()
 
 # Register the custom command group with the Flask application
 app.cli.add_command(custom_cli)
