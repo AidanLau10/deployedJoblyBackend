@@ -20,6 +20,8 @@ from model.applications import initApplications
 
 from views.projects.projects import project_views
 
+
+
 # Initialize the SQLAlchemy object to work with the Flask app instance
 db.init_app(app)
 
@@ -30,7 +32,8 @@ app.register_blueprint(job_api)
 app.register_blueprint(jobuser_api)
 
 # register URIs for server pages
-
+app.register_blueprint(algorithm_views) 
+app.register_blueprint(recipe_views) 
 app.register_blueprint(project_views) 
 
 
