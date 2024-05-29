@@ -33,7 +33,7 @@ app.config['JWT_TOKEN_NAME'] = JWT_TOKEN_NAME
 
 # Setup SQLAlchemy object and properties for the database (db)
 # Local SQLite database within the instance folder
-dbURI = 'sqlite:////volumes/sqlite.db'
+dbURI = 'sqlite:///volumes/sqlite.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = dbURI
 db = SQLAlchemy()
